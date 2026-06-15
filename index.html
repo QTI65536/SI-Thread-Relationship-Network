@@ -326,7 +326,7 @@
 
 <!-- Detail Panel -->
 <div id="detail">
-  <button id="detail-close" onclick="close()">close ✕</button>
+  <button id="detail-close" onclick="closePanel()">close ✕</button>
   <div id="detail-cluster" class="detail-cluster"></div>
   <h2 id="detail-title"></h2>
   <div id="detail-body"></div>
@@ -604,7 +604,7 @@ function show(id) {
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function close() {
+function closePanel() {
   document.getElementById('detail').classList.remove('visible');
 }
 </script>
