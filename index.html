@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SI Thread — Investment Relationship Network</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f4f0;
+    color: #1a1a18;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #3d3d3a;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    font-size: 0.78rem;
+    color: #888780;
+    margin-bottom: 1.5rem;
+  }
+
+  .canvas-wrap {
+    background: #fff;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    overflow-x: auto;
+  }
+
+  svg { display: block; width: 100%; }
+
+  .node-g { cursor: pointer; }
+  .node-g rect, .node-g circle { transition: opacity 0.15s; }
+  .node-g:hover rect { opacity: 0.78; }
+
+  /* Detail panel */
+  #detail {
+    display: none;
+    background: #fff;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    animation: fadeIn 0.18s ease;
+  }
+  #detail.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  #detail-close {
+    position: absolute;
+    top: 0.9rem; right: 1rem;
+    background: none;
+    border: 0.5px solid #d3d1c7;
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    color: #888780;
+    cursor: pointer;
+  }
+  #detail-close:hover { background: #f5f4f0; }
+
+  .detail-cluster {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  #detail h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #1a1a18;
+  }
+
+  #detail p {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #3d3d3a;
+    margin-bottom: 0.6rem;
+  }
+
+  #detail ul {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: #3d3d3a;
+    padding-left: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  #detail .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 2px 3px 2px 0;
+    font-weight: 500;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: #5f5e5a;
+    margin-top: 0.5rem;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0;
+  }
+
+  .disclaimer {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 1.5rem;
+    line-height: 1.5;
+    border-top: 0.5px solid #e0dfd9;
+    padding-top: 0.75rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>SI Thread — Investment Relationship Network</h1>
+<p class="subtitle">Click any node to read discussion highlights from the thread.</p>
+
+<div class="canvas-wrap">
+<svg viewBox="0 0 680 620" role="img" aria-label="Investment relationship network from SI thread">
+<title>Investment relationship network</title>
+<desc>Clusters: QTI CEF holdings (blue), Energy/midstream (amber), CEF pairing (teal), Dividend/equity (coral), Cash/fixed income (gray).</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── CLUSTER 1: QTI CEF Holdings ── -->
+<text font-size="11" x="90" y="28" text-anchor="middle" fill="#185FA5" font-family="system-ui,sans-serif">QTI's CEF holdings</text>
+<g class="node-g" onclick="show('cef-portfolio')">
+  <rect x="32" y="36" width="116" height="38" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="13" font-weight="500" x="90" y="59" text-anchor="middle" fill="#0C447C" font-family="system-ui,sans-serif">CEF portfolio</text>
+</g>
+<line x1="90" y1="74" x2="62" y2="108" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="90" y1="74" x2="90" y2="108" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="90" y1="74" x2="118" y2="108" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="90" y1="74" x2="148" y2="108" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="62" y1="140" x2="62" y2="174" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="90" y1="140" x2="90" y2="174" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="118" y1="140" x2="118" y2="174" stroke="#85B7EB" stroke-width="0.5"/>
+<line x1="148" y1="140" x2="148" y2="174" stroke="#85B7EB" stroke-width="0.5"/>
+<g class="node-g" onclick="show('bst')">
+  <rect x="32" y="108" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="62" y="124" text-anchor="middle" dominant-baseline="central" fill="#0C447C" font-family="system-ui,sans-serif">BST</text>
+</g>
+<g class="node-g" onclick="show('pdi-pcn')">
+  <rect x="60" y="108" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="90" y="124" text-anchor="middle" dominant-baseline="central" fill="#0C447C" font-family="system-ui,sans-serif">PDI / PCN</text>
+</g>
+<g class="node-g" onclick="show('dnp')">
+  <rect x="88" y="108" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="118" y="124" text-anchor="middle" dominant-baseline="central" fill="#0C447C" font-family="system-ui,sans-serif">DNP</text>
+</g>
+<g class="node-g" onclick="show('aio')">
+  <rect x="118" y="108" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="148" y="124" text-anchor="middle" dominant-baseline="central" fill="#0C447C" font-family="system-ui,sans-serif">AIO</text>
+</g>
+<g class="node-g" onclick="show('bst-zscore')">
+  <rect x="22" y="174" width="80" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="62" y="190" text-anchor="middle" dominant-baseline="central" fill="#185FA5" font-family="system-ui,sans-serif">z-score drop</text>
+</g>
+<g class="node-g" onclick="show('time-machine')">
+  <rect x="58" y="174" width="64" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="90" y="190" text-anchor="middle" dominant-baseline="central" fill="#185FA5" font-family="system-ui,sans-serif">time machine</text>
+</g>
+<g class="node-g" onclick="show('trimmed')">
+  <rect x="88" y="174" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="118" y="190" text-anchor="middle" dominant-baseline="central" fill="#185FA5" font-family="system-ui,sans-serif">trimmed</text>
+</g>
+<g class="node-g" onclick="show('delta-mode')">
+  <rect x="118" y="174" width="60" height="32" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+  <text font-size="12" x="148" y="190" text-anchor="middle" dominant-baseline="central" fill="#185FA5" font-family="system-ui,sans-serif">delta mode</text>
+</g>
+
+<!-- ── CLUSTER 2: Energy / Midstream ── -->
+<text font-size="11" x="450" y="28" text-anchor="middle" fill="#854F0B" font-family="system-ui,sans-serif">Energy / midstream</text>
+<g class="node-g" onclick="show('midstream-thesis')">
+  <rect x="386" y="36" width="128" height="38" rx="8" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="13" font-weight="500" x="450" y="59" text-anchor="middle" fill="#633806" font-family="system-ui,sans-serif">Midstream thesis</text>
+</g>
+<line x1="420" y1="74" x2="390" y2="108" stroke="#EF9F27" stroke-width="0.5"/>
+<line x1="450" y1="74" x2="450" y2="108" stroke="#EF9F27" stroke-width="0.5"/>
+<line x1="480" y1="74" x2="510" y2="108" stroke="#EF9F27" stroke-width="0.5"/>
+<g class="node-g" onclick="show('kyn')">
+  <rect x="356" y="108" width="68" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="390" y="124" text-anchor="middle" dominant-baseline="central" fill="#633806" font-family="system-ui,sans-serif">KYN</text>
+</g>
+<g class="node-g" onclick="show('emo')">
+  <rect x="416" y="108" width="68" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="450" y="124" text-anchor="middle" dominant-baseline="central" fill="#633806" font-family="system-ui,sans-serif">EMO</text>
+</g>
+<g class="node-g" onclick="show('peo')">
+  <rect x="476" y="108" width="68" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="510" y="124" text-anchor="middle" dominant-baseline="central" fill="#633806" font-family="system-ui,sans-serif">PEO</text>
+</g>
+<line x1="390" y1="140" x2="390" y2="174" stroke="#EF9F27" stroke-width="0.5"/>
+<line x1="450" y1="140" x2="450" y2="174" stroke="#EF9F27" stroke-width="0.5"/>
+<line x1="510" y1="140" x2="510" y2="174" stroke="#EF9F27" stroke-width="0.5"/>
+<g class="node-g" onclick="show('iran-ceasefire')">
+  <rect x="340" y="174" width="100" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="390" y="190" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-family="system-ui,sans-serif">Iran ceasefire</text>
+</g>
+<g class="node-g" onclick="show('tollbooth')">
+  <rect x="410" y="174" width="80" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="450" y="190" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-family="system-ui,sans-serif">tollbooth risk</text>
+</g>
+<g class="node-g" onclick="show('chowder-energy')">
+  <rect x="472" y="174" width="76" height="32" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text font-size="12" x="510" y="190" text-anchor="middle" dominant-baseline="central" fill="#854F0B" font-family="system-ui,sans-serif">WMB VLO COP</text>
+</g>
+
+<!-- ── CLUSTER 3: CEF Pairing ── -->
+<text font-size="11" x="130" y="268" text-anchor="middle" fill="#0F6E56" font-family="system-ui,sans-serif">CEF pairing</text>
+<g class="node-g" onclick="show('adx-gam')">
+  <rect x="48" y="276" width="164" height="38" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+  <text font-size="13" font-weight="500" x="130" y="299" text-anchor="middle" fill="#085041" font-family="system-ui,sans-serif">ADX + GAM pairing</text>
+</g>
+<line x1="100" y1="314" x2="80" y2="348" stroke="#5DCAA5" stroke-width="0.5"/>
+<line x1="130" y1="314" x2="130" y2="348" stroke="#5DCAA5" stroke-width="0.5"/>
+<line x1="162" y1="314" x2="178" y2="348" stroke="#5DCAA5" stroke-width="0.5"/>
+<g class="node-g" onclick="show('adx')">
+  <rect x="44" y="348" width="72" height="32" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text font-size="12" x="80" y="364" text-anchor="middle" dominant-baseline="central" fill="#085041" font-family="system-ui,sans-serif">ADX</text>
+</g>
+<g class="node-g" onclick="show('gam')">
+  <rect x="94" y="348" width="72" height="32" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text font-size="12" x="130" y="364" text-anchor="middle" dominant-baseline="central" fill="#085041" font-family="system-ui,sans-serif">GAM</text>
+</g>
+<g class="node-g" onclick="show('sector-weights')">
+  <rect x="142" y="348" width="72" height="32" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text font-size="12" x="178" y="364" text-anchor="middle" dominant-baseline="central" fill="#085041" font-family="system-ui,sans-serif">30% tech</text>
+</g>
+<line x1="80" y1="380" x2="80" y2="414" stroke="#5DCAA5" stroke-width="0.5"/>
+<g class="node-g" onclick="show('gof-nie-stk')">
+  <rect x="34" y="414" width="92" height="32" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text font-size="12" x="80" y="430" text-anchor="middle" dominant-baseline="central" fill="#0F6E56" font-family="system-ui,sans-serif">GOF, NIE, STK</text>
+</g>
+<text font-size="11" x="80" y="458" text-anchor="middle" fill="#0F6E56" font-family="system-ui,sans-serif">(removed from tracker)</text>
+
+<!-- ── CLUSTER 4: Dividend / Equity ── -->
+<text font-size="11" x="460" y="268" text-anchor="middle" fill="#993C1D" font-family="system-ui,sans-serif">Dividend / equity</text>
+<g class="node-g" onclick="show('sp-dividend')">
+  <rect x="372" y="276" width="176" height="38" rx="8" fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
+  <text font-size="13" font-weight="500" x="460" y="299" text-anchor="middle" fill="#712B13" font-family="system-ui,sans-serif">S&amp;P dividend picks</text>
+</g>
+<line x1="410" y1="314" x2="390" y2="348" stroke="#F0997B" stroke-width="0.5"/>
+<line x1="440" y1="314" x2="440" y2="348" stroke="#F0997B" stroke-width="0.5"/>
+<line x1="480" y1="314" x2="510" y2="348" stroke="#F0997B" stroke-width="0.5"/>
+<g class="node-g" onclick="show('pep-pg')">
+  <rect x="354" y="348" width="72" height="32" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text font-size="12" x="390" y="364" text-anchor="middle" dominant-baseline="central" fill="#712B13" font-family="system-ui,sans-serif">PEP / PG</text>
+</g>
+<g class="node-g" onclick="show('cat')">
+  <rect x="404" y="348" width="72" height="32" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text font-size="12" x="440" y="364" text-anchor="middle" dominant-baseline="central" fill="#712B13" font-family="system-ui,sans-serif">CAT</text>
+</g>
+<g class="node-g" onclick="show('orcl-csco')">
+  <rect x="474" y="348" width="72" height="32" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text font-size="12" x="510" y="364" text-anchor="middle" dominant-baseline="central" fill="#712B13" font-family="system-ui,sans-serif">ORCL / CSCO</text>
+</g>
+<line x1="440" y1="380" x2="440" y2="414" stroke="#F0997B" stroke-width="0.5"/>
+<g class="node-g" onclick="show('ai-rotation')">
+  <rect x="378" y="414" width="124" height="32" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+  <text font-size="12" x="440" y="430" text-anchor="middle" dominant-baseline="central" fill="#993C1D" font-family="system-ui,sans-serif">AI rotation (Sep?)</text>
+</g>
+
+<!-- ── CLUSTER 5: Cash / Fixed Income ── -->
+<text font-size="11" x="310" y="500" text-anchor="middle" fill="#5F5E5A" font-family="system-ui,sans-serif">Cash / fixed income</text>
+<g class="node-g" onclick="show('sgov')">
+  <rect x="230" y="510" width="160" height="38" rx="8" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text font-size="13" font-weight="500" x="310" y="533" text-anchor="middle" fill="#2C2C2A" font-family="system-ui,sans-serif">SGOV</text>
+</g>
+<line x1="280" y1="548" x2="260" y2="578" stroke="#B4B2A9" stroke-width="0.5"/>
+<line x1="340" y1="548" x2="360" y2="578" stroke="#B4B2A9" stroke-width="0.5"/>
+<g class="node-g" onclick="show('exdiv-tax')">
+  <rect x="214" y="578" width="96" height="32" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text font-size="12" x="262" y="594" text-anchor="middle" dominant-baseline="central" fill="#444441" font-family="system-ui,sans-serif">ex-div tax tip</text>
+</g>
+<g class="node-g" onclick="show('income-cg')">
+  <rect x="314" y="578" width="96" height="32" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+  <text font-size="12" x="362" y="594" text-anchor="middle" dominant-baseline="central" fill="#444441" font-family="system-ui,sans-serif">income vs CG</text>
+</g>
+
+<!-- ── CROSS-CLUSTER CONNECTORS ── -->
+<path d="M148 170 Q200 240 130 276" fill="none" stroke="#c0bfb8" stroke-width="0.5" stroke-dasharray="4 3"/>
+<path d="M450 206 Q450 250 460 276" fill="none" stroke="#c0bfb8" stroke-width="0.5" stroke-dasharray="4 3"/>
+<path d="M440 446 Q430 480 370 510" fill="none" stroke="#c0bfb8" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+<!-- ── LEGEND ── -->
+<rect x="40" y="466" width="10" height="10" rx="2" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
+<text font-size="11" x="56" y="476" fill="#185FA5" font-family="system-ui,sans-serif">QTI's CEF holdings</text>
+<rect x="175" y="466" width="10" height="10" rx="2" fill="#FAC775" stroke="#854F0B" stroke-width="0.5"/>
+<text font-size="11" x="191" y="476" fill="#854F0B" font-family="system-ui,sans-serif">Energy / midstream</text>
+<rect x="40" y="484" width="10" height="10" rx="2" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
+<text font-size="11" x="56" y="494" fill="#0F6E56" font-family="system-ui,sans-serif">CEF pairing</text>
+<rect x="175" y="484" width="10" height="10" rx="2" fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
+<text font-size="11" x="191" y="494" fill="#993C1D" font-family="system-ui,sans-serif">Dividend / equity</text>
+<rect x="310" y="466" width="10" height="10" rx="2" fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
+<text font-size="11" x="326" y="476" fill="#5F5E5A" font-family="system-ui,sans-serif">Cash / fixed income</text>
+<line x1="430" y1="476" x2="464" y2="476" stroke="#c0bfb8" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text font-size="11" x="470" y="480" fill="#888780" font-family="system-ui,sans-serif">cross-cluster link</text>
+</svg>
+</div>
+
+<!-- Detail Panel -->
+<div id="detail">
+  <button id="detail-close" onclick="close()">close ✕</button>
+  <div id="detail-cluster" class="detail-cluster"></div>
+  <h2 id="detail-title"></h2>
+  <div id="detail-body"></div>
+</div>
+
+<div class="disclaimer">
+  For informational purposes only. Not investment advice. Past performance is no guarantee of future results.
+  Always conduct your own due diligence before making investment decisions.
+  Content derived from SI thread discussion; reflects participant opinions only.
+</div>
+
+<script>
+const DATA = {
+  'cef-portfolio': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "QTI's CEF portfolio — tracker overview",
+    body: `<p>QTI runs a structured CEF tracker covering 31 funds (trimmed to 27 after the cleanup) tracked across up to 15 sessions in the "time machine." The tracker produces a daily scatter matrix plotting z-score vs. discount/premium, grouping funds into four quadrants: green (z≥0, D/P&lt;0), blue (z≥0, D/P≥0), orange (z&lt;0, D/P&lt;0), and gray (z&lt;0, D/P≥0).</p>
+    <p>Active holdings mentioned in the thread context: PDI, PCN, BDJ, EOI, BUI, BME, RQI, RNP, RFI, AIO, BST, DNP, UTF, ERH, UTG (tracking only). The tracker update as of 6/12/2026 was the primary data reference in the thread.</p>
+    <p><strong>Active triggers open at thread time:</strong></p>
+    <ul>
+      <li>BDJ second tranche — z1y ≤ −2.00 fired 06/08, entry window open</li>
+      <li>BUI second tranche — watch z-score cross zero into blue quadrant</li>
+      <li>BST add — watch z1y improvement two consecutive sessions</li>
+      <li>UTG initiate — z1y ≤ −1.75 AND D/P ≤ −1.50%</li>
+    </ul>`
+  },
+  'bst': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "BST — BlackRock Science & Technology Trust",
+    body: `<p>BST was the most discussed of QTI's holdings in this thread segment. QTI's post (#31305) called out BST's move between 6/1 and 6/12 as "especially drastic" — the fund retreated from being relatively expensive (elevated z-score) to relatively cheap, a significant quadrant-level shift visible in the delta mode table.</p>
+    <p>This move is what drove BST onto the active trigger watch list: the current signal is to add on z1y improvement across two consecutive sessions. No add has been made yet pending that confirmation.</p>
+    <p><strong>QTI position:</strong> 2,511.437 shares, cost basis $34.78.</p>`
+  },
+  'pdi-pcn': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "PDI / PCN — PIMCO income CEFs",
+    body: `<p>PDI (PIMCO Dynamic Income) and PCN (PIMCO Income Strategy) are both PIMCO fixed-income CEFs in QTI's portfolio. They were referenced in the thread context as examples of funds with premium histories — PDI and PCN both carry elevated premiums relative to the broader CEF universe, which is relevant when comparing them to GOF (whose extreme premium was the main reason GOF was removed from the tracker).</p>
+    <p><strong>QTI positions:</strong> PDI — 840 shares, cb $17.91. PCN — 2,389 shares, cb $12.72.</p>`
+  },
+  'dnp': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "DNP — Duff &amp; Phelps Utility &amp; Infrastructure",
+    body: `<p>DNP is a utility/infrastructure CEF in QTI's Tier 3 defensive sleeve. It carries a long history of a persistent premium, which puts it in similar territory to the funds that tend to sit in the "gray" or "blue" quadrant of QTI's scatter matrix most of the time.</p>
+    <p>DNP was mentioned alongside PDI and PCN in the tracker context as a fund whose premium history is elevated but still within the normal range of the tracked universe — contrasted against GOF, which sits "so far outside the premium range of the rest of the universe" that it distorted the Y-axis.</p>
+    <p><strong>QTI position:</strong> 7,868 shares, cb $9.09.</p>`
+  },
+  'aio': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "AIO — Virtus Artificial Intelligence &amp; Technology",
+    body: `<p>AIO was cited by QTI in the delta mode update (#31305) as one of the two funds whose movement between 6/1 and 6/12 was highlighted as an example of what the new playback feature shows. BST's move was described as the more drastic of the two.</p>
+    <p>AIO sits in QTI's core holdings as a tech/AI-themed CEF. Its z-score trajectory during the session window was visible in the sparkline column of the delta mode table.</p>
+    <p><strong>QTI position:</strong> 1,851.95 shares, cb $24.41.</p>`
+  },
+  'bst-zscore': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "BST z-score drop — what the thread said",
+    body: `<p>QTI's post (#31305) specifically called out BST's z-score move as "especially drastic" between sessions on 6/1 and 6/12. The fund moved from a position of relative expensiveness (elevated z-score, meaning the discount/premium was well above its 52-week average) to relative cheapness — a meaningful shift that crossed the z=0 boundary and changed BST's quadrant.</p>
+    <p>This is exactly the type of signal QTI's delta mode was built to surface: large z-score moves get amber highlighting if they stay within the same quadrant, or green/red if they cross a boundary. BST's move earned a quadrant-change highlight.</p>
+    <p>The practical implication: BST's current trigger is to add on z1y improvement across two consecutive sessions — the system is waiting for the reversal to confirm before acting.</p>`
+  },
+  'time-machine': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "CEF time machine feature",
+    body: `<p>The time machine stores up to 15 sessions of scatter data, with the oldest rolling off when a new session is added. Each session captures z-scores and discount/premium values for all tracked funds, enabling playback through the historical sequence.</p>
+    <p>QTI's post (#31302) noted that additional token savings are available by reducing the time machine from 15 sessions to 10 — a tradeoff between historical depth and processing cost. The new playback button added in the 6/12 update allows cycling through all stored dates to see how the scatter matrix evolved.</p>
+    <p>The delta mode table complements the time machine by surfacing which funds moved most significantly between the two most recent sessions, without requiring the user to manually compare snapshots.</p>`
+  },
+  'trimmed': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "Tracker cleanup — funds removed",
+    body: `<p>QTI proposed and executed the removal of four funds from the CEF tracker in post #31302, saving approximately 6,250 tokens (~31% of the data blob):</p>
+    <ul>
+      <li><strong>ADX, NIE, STK</strong> — quarterly distributors that rarely generate action signals and tend to sit in fixed quadrant positions. STK specifically flagged for low liquidity, making it a frequent outlier that adds noise without signal value.</li>
+      <li><strong>GOF</strong> — the strongest case for removal. GOF's extreme premium history (averaging ~+15–16% D/P over 52 weeks) pushed the Y-axis ceiling up dramatically, compressing visual resolution for everything else. GOF has no position in QTI's portfolio, no active trigger, and has never appeared in an alert panel across the entire session history. It was described as "tracking a different instrument class."</li>
+    </ul>
+    <p>Max2.0 endorsed the outlier-trimming logic in reply (#31322): "Trimming the outliers to improve the resolution and information value makes a lot of sense to me."</p>`
+  },
+  'delta-mode': {
+    cluster: "QTI's CEF holdings", clusterColor: '#185FA5', clusterBg: '#E6F1FB',
+    title: "Delta mode — new tracker feature",
+    body: `<p>Delta mode was added in QTI's 6/12 update (#31305) as a complement to the scatter view, toggled with Scatter/Delta buttons. It shows a table of all tracked funds sorted by significance of movement between the two most recent sessions.</p>
+    <p><strong>Three visual tiers:</strong></p>
+    <ul>
+      <li>Red highlight — quadrant downgrade (fund moved toward orange/gray, deteriorating)</li>
+      <li>Green highlight — quadrant upgrade (fund moved toward green/blue, improving)</li>
+      <li>Amber highlight — large z-score move ≥0.50 within the same quadrant (no quadrant change)</li>
+    </ul>
+    <p><strong>Each row shows:</strong> z-score history sparkline (mini bar chart across all sessions), Z prev/Z now with delta (color-coded), D/P delta session-over-session, and quadrant with directional arrow if a boundary was crossed.</p>`
+  },
+
+  // ── ENERGY CLUSTER ──
+  'midstream-thesis': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "The midstream debate — buy now vs. wait",
+    body: `<p>The core divide in the thread: InDivGrowthWeTrust staked out a clear "wait" position — the Mideast conflict has inflated energy valuations, and when the Strait reopens and oil normalizes, energy stocks and funds could fall 15–25% or more. Build a shopping list now; buy after the drop.</p>
+    <p>dan1944 offered a more nuanced counterpoint: crude may drop post-resolution, but midstream could actually benefit. Lower crude stimulates consumer demand and encourages governments to refill strategic reserves — both increase pipeline throughput and potentially support midstream revenues.</p>
+    <p>chowder added a critical caveat: the tollbooth thesis has limits. When oil prices are persistently low, contracts get renegotiated or canceled. The "steady fee regardless of commodity price" narrative is not unconditional.</p>
+    <p>DoctorRicky disclosed he is currently 30% energy in nontaxable accounts (overweight his 20% target) but is staying put given current price support from the conflict premium.</p>`
+  },
+  'kyn': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "KYN — Kayne Anderson MLP/Midstream Investment",
+    body: `<p>KYN was recommended by chowder (#31309) as a better pure-play midstream CEF than PEO for an investor specifically seeking midstream pipeline exposure. chowder noted that PEO leans toward the major integrated oil companies rather than pipeline infrastructure, making KYN the more appropriate vehicle for the stated objective.</p>
+    <p>OneDonatoOne flagged KYN as having come up in their search results (#31326) but noted they hadn't yet evaluated it in detail. They were aware AMLP and MLPX are ETF alternatives that also avoid the K-1 issue (even within a Roth, some prefer to sidestep K-1 complexity).</p>
+    <p>KYN is also part of chowder's Legacy Portfolio energy CEF exposure (alongside SRV), contributing to the 13% overall energy allocation.</p>`
+  },
+  'emo': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "EMO — ClearBridge MLP &amp; Midstream Fund",
+    body: `<p>EMO was introduced by OneDonatoOne (#31306) as a midstream CEF candidate. Primary appeal: avoids the K-1 even when held in a Roth. Their initial analysis applied a tactical value indicator: Discount × Yield × Z-Score = (−0.1249) × (0.0860) × (−1.67) ≈ 0.018, interpreted as the fund's cash flow being highly discounted relative to its historical baseline. Leverage at 19.43% was described as disciplined.</p>
+    <p>InDivGrowthWeTrust cautioned hard (#31308): EMO's distribution history is "not pretty" (per Seeking Alpha) and its NAV history since inception is "atrocious" (per CEFConnect), though the last 5 years are described as solid. His advice: look carefully before buying, and in any case he wouldn't be adding energy exposure until the Mideast war resolves.</p>`
+  },
+  'peo': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "PEO — Adams Natural Resources Fund",
+    body: `<p>PEO came up in the discussion when InDivGrowthWeTrust referenced his own energy CEF position (#31308). He owns PEO but is not adding until the Mideast situation resolves and oil falls to pre-war levels.</p>
+    <p>chowder pointed out (#31309) that PEO is more of a complete energy fund led by major oil companies — not a pure-play midstream vehicle. For an investor specifically wanting pipeline/infrastructure exposure, KYN is the more targeted option. PEO was noted as likely to see its valuation fall 15–25% or more when the conflict premium unwinds.</p>`
+  },
+  'iran-ceasefire': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "Iran ceasefire — market catalyst",
+    body: `<p>A U.S.-Iran ceasefire deal broke during the thread (post #31339, InDivGrowthWeTrust: "Peace on Earth... Stock futures jump"). The deal reportedly included reopening the Strait and lifting the blockade.</p>
+    <p>SeeksQuality characterized it (#31340) as a 60-day ceasefire with a framework to negotiate a final agreement, with progress already made on final agreement text. The thread reaction was cautiously optimistic — "fingers crossed they make progress from here."</p>
+    <p>Investment implication: this is exactly the scenario InDivGrowthWeTrust had been anticipating. If sustained, it would deflate the conflict premium in energy prices and open up the better entry points the shopping-list camp was waiting for. DoctorRicky had noted (#31328) that the "Iran excursion" had already elevated prices and lowered dividend percentages on his energy holdings, which he believed were overvalued.</p>`
+  },
+  'tollbooth': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "Tollbooth risk — chowder's caveat",
+    body: `<p>chowder injected a frequently overlooked nuance into the midstream-as-tollbooth thesis (#31329): when oil prices are low, contracts get renegotiated or canceled. The steady contractual base income that defines the "tollbooth" narrative is not unconditional — it depends on counterparties having economic incentive to keep contracts in place.</p>
+    <p>OneDonatoOne had framed the midstream thesis classically (#31327): minimally exposed to price fluctuations, steady contractual income transporting products regardless of how much capacity flows, and a potential tailwind from refilling strategic reserves post-conflict. chowder's pushback tempered that framing without fully rejecting it.</p>
+    <p>The upshot: midstream is more durable than upstream in a price decline, but "tollbooth" is not synonymous with "risk-free." Low sustained oil prices eventually pressure volumes, contracts, and distributions.</p>`
+  },
+  'chowder-energy': {
+    cluster: 'Energy / midstream', clusterColor: '#854F0B', clusterBg: '#FAEEDA',
+    title: "chowder's energy allocation",
+    body: `<p>chowder disclosed his Legacy Portfolio energy holdings in post #31317, describing 13% overall energy weighting:</p>
+    <ul>
+      <li>WMB (Williams Companies) — 1.7%</li>
+      <li>VLO (Valero Energy) — 1.7%</li>
+      <li>COP (ConocoPhillips) — 1.6%</li>
+      <li>TTE (TotalEnergies) — 1.6%</li>
+      <li>CVX (Chevron) — 1.6%</li>
+      <li>LNG (Cheniere Energy) — 1.4%</li>
+      <li>Plus energy CEF exposure via SRV and KYN</li>
+    </ul>
+    <p>chowder is comfortable with energy up to 15%, but only if the overage comes from price appreciation rather than new allocation. He did not indicate plans to add at current elevated valuations.</p>`
+  },
+
+  // ── CEF PAIRING CLUSTER ──
+  'adx-gam': {
+    cluster: 'CEF pairing', clusterColor: '#0F6E56', clusterBg: '#E1F5EE',
+    title: "ADX + GAM marriage proposal",
+    body: `<p>InDivGrowthWeTrust (#31314) laid out a detailed case for pairing ADX (Adams Diversified Equity Fund) and GAM (General American Investors) in roughly equal dollar amounts — approximately 5 ADX shares per 2 GAM shares achieves a near 50/50 split.</p>
+    <p>The combined portfolio produces a diversified blend of high-quality companies without overexposure to any single name. The top 20 holdings represent 51.3% of combined weight. Tech allocation comes in at just 30% — well below the S&P 500's heavier tilt — which was highlighted as attractive for investors seeking to reduce tech concentration.</p>
+    <p>jritz0 confirmed in #31319 that he made this pairing on March 16 of the same year, with ADX a long-time solo holding and GAM joining it at slightly higher weight. He described the union as expected to be "long and prosperous."</p>`
+  },
+  'adx': {
+    cluster: 'CEF pairing', clusterColor: '#0F6E56', clusterBg: '#E1F5EE',
+    title: "ADX — Adams Diversified Equity Fund",
+    body: `<p>ADX is a diversified equity CEF managed by Adams Funds. It was described in the thread as a "long-time bachelor" in jritz0's portfolio before being paired with GAM. ADX is one of the funds that was removed from QTI's CEF tracker (#31302) as part of the token-reduction cleanup, on the grounds that it is a quarterly distributor, rarely generates action signals, and tends to sit in a fixed quadrant position most of the time.</p>
+    <p>Website referenced in thread: adamsfunds.com</p>`
+  },
+  'gam': {
+    cluster: 'CEF pairing', clusterColor: '#0F6E56', clusterBg: '#E1F5EE',
+    title: "GAM — General American Investors",
+    body: `<p>GAM is a diversified equity CEF managed by General American Investors Company. InDivGrowthWeTrust was "toying with the idea" of adding GAM to complement an existing ADX position in a retirement portfolio. The pairing analysis suggested GAM brings slightly more assets into the combined position at equal-dollar weighting (5 ADX shares per 2 GAM shares).</p>
+    <p>Website referenced in thread: generalamericaninvestors.com</p>
+    <p>Three less-familiar names in the combined top holdings were flagged: EG (Everest Group, insurance/reinsurance), CCO (Clear Channel Outdoor, advertising), and ACGL (Arch Capital Group, property &amp; casualty insurance).</p>`
+  },
+  'sector-weights': {
+    cluster: 'CEF pairing', clusterColor: '#0F6E56', clusterBg: '#E1F5EE',
+    title: "ADX + GAM combined sector weights",
+    body: `<p>InDivGrowthWeTrust ran a combined sector weight analysis for an equal-dollar ADX + GAM position, comparing to the S&P 500 benchmark. The headline finding: tech at just 30% combined — meaningfully below the S&P 500's weighting — was cited as a key attraction for investors seeking diversification away from tech concentration.</p>
+    <p>The top 20 combined holdings carry a 51.3% weight, providing broad diversification without any single position dominating. BRK in the analysis includes both A and B shares combined; Google includes both A and C shares.</p>
+    <p>The analysis was described as "at least 95% accurate" rather than precisely calculated.</p>`
+  },
+  'gof-nie-stk': {
+    cluster: 'CEF pairing', clusterColor: '#0F6E56', clusterBg: '#E1F5EE',
+    title: "GOF, NIE, STK — removed from tracker",
+    body: `<p>These three funds were removed from QTI's CEF tracker along with ADX as part of the 6/12 cleanup:</p>
+    <ul>
+      <li><strong>NIE</strong> (Virtus Equity &amp; Convertible Income) — quarterly distributor, low action-signal frequency.</li>
+      <li><strong>STK</strong> (Columbia Seligman Premium Technology Growth) — quarterly distributor with specifically flagged low liquidity, making it a frequent outlier that added noise without signal value.</li>
+      <li><strong>GOF</strong> (Guggenheim Strategic Opportunities) — the most consequential removal. GOF's extreme premium history (~+15–16% D/P average over 52 weeks) pushed the Y-axis ceiling dramatically higher, compressing visual resolution for everything else. No position, no trigger, never appeared in an alert panel across the entire session history. Described as "tracking a different instrument class" relative to the rest of the universe.</li>
+    </ul>
+    <p>Combined removal saves ~6,250 tokens (~31% of the data blob).</p>`
+  },
+
+  // ── DIVIDEND / EQUITY CLUSTER ──
+  'sp-dividend': {
+    cluster: 'Dividend / equity', clusterColor: '#993C1D', clusterBg: '#FAECE7',
+    title: "Top 10 S&P 500 dividend stocks (Q1 2026)",
+    body: `<p>chowder shared a list from Insider Monkey's Q1 2026 hedge fund popularity database (#31313), screened for strong dividend policies, sound financials, and solid balance sheets:</p>
+    <ol style="padding-left:1.2rem;font-size:0.85rem;line-height:1.8;color:#3d3d3a;">
+      <li>ORCL (Oracle)</li>
+      <li>CSCO (Cisco)</li>
+      <li>PG (Procter &amp; Gamble)</li>
+      <li>HON (Honeywell)</li>
+      <li>PEP (PepsiCo)</li>
+      <li>QCOM (Qualcomm)</li>
+      <li>TGT (Target)</li>
+      <li>CL (Colgate-Palmolive)</li>
+      <li>ECL (Ecolab)</li>
+      <li>CB (Chubb)</li>
+    </ol>
+    <p>chowder noted he is actively building PEP and PG, and does not hold any of the other names across his portfolios.</p>`
+  },
+  'pep-pg': {
+    cluster: 'Dividend / equity', clusterColor: '#993C1D', clusterBg: '#FAECE7',
+    title: "PEP / PG — chowder's active builds",
+    body: `<p>PepsiCo (PEP) and Procter &amp; Gamble (PG) were the only two names from the top-10 dividend list that chowder confirmed he is actively building positions in. Both are classic consumer staples Dividend Aristocrats with long histories of dividend growth.</p>
+    <p>In the broader thread context, chowder's best-performing portfolio was up 22.35% YTD as of the thread date, driven by a handful of strong performers. PEP and PG are not likely contributors to that outperformance — they would be in the portfolio for income and stability rather than growth.</p>`
+  },
+  'cat': {
+    cluster: 'Dividend / equity', clusterColor: '#993C1D', clusterBg: '#FAECE7',
+    title: "CAT — Caterpillar as AI picks &amp; shovels",
+    body: `<p>Caterpillar (CAT) came up in an interesting framing in chowder's post (#31282): he noted that CAT is "actually considered an AI picks and shovels company." The logic is that massive AI data center buildout requires heavy construction equipment and industrial machinery — CAT benefits indirectly from the AI infrastructure capex wave without being a direct tech play.</p>
+    <p>chowder indicated that CAT is one of the few names in his portfolio where he would average down on a correction, in contrast to his general preference for averaging up on cost basis. He was asked (#31289) if he would start a position in CAT today — he said yes, starting small and adding as price rose.</p>
+    <p>cemanuel's portfolio was up 45.33% YTD (vs. S&P 500 +9.15%) and Smart_Asset up 46.97% — both significantly outperforming. CAT's YTD performance was part of the chart chowder shared showing his best-performing portfolio holdings.</p>`
+  },
+  'orcl-csco': {
+    cluster: 'Dividend / equity', clusterColor: '#993C1D', clusterBg: '#FAECE7',
+    title: "ORCL / CSCO — top-ranked dividend plays",
+    body: `<p>Oracle (ORCL, ranked #1) and Cisco (CSCO, ranked #2) topped the Insider Monkey hedge fund popularity screen for S&P 500 dividend stocks in Q1 2026. chowder confirmed he does not hold either name in any portfolio he manages.</p>
+    <p>ORCL's position at the top of the list is notable given its AI cloud infrastructure buildout (Oracle Cloud Infrastructure has benefited significantly from AI workload demand). CSCO was ranked #2, consistent with its role as a networking infrastructure play. Both could be characterized as picks-and-shovels beneficiaries of the AI buildout — similar framing to CAT's positioning in the thread.</p>`
+  },
+  'ai-rotation': {
+    cluster: 'Dividend / equity', clusterColor: '#993C1D', clusterBg: '#FAECE7',
+    title: "AI trade rotation — timing the slowdown",
+    body: `<p>cemanuel (#31301) flagged a planned tech rotation: reduce from ~70% to ~40% tech allocation around September, based on the view that the AI parabolic growth curve will level out. Not a crash call — just valuation compression as large companies find it mathematically harder to sustain massive YoY revenue growth at scale.</p>
+    <p>dan1944 asked the key timing question (#31307): where does the decline show up first — chips, infrastructure, compute, capital restraint, or market cycle? cemanuel admitted the precise trigger logic had faded from memory and planned to revisit it in a couple of months.</p>
+    <p>Max2.0 pushed back using SpaceX as a counterexample (#31321): SpaceX's market cap is 130× sales, suggesting some tech-adjacent companies still have long runways before valuation compression sets in.</p>
+    <p>cemanuel acknowledged the Iran war may have pushed the timeline back slightly, but held the core thesis: the crazy tech run has to slow sometime.</p>`
+  },
+
+  // ── CASH / FIXED INCOME ──
+  'sgov': {
+    cluster: 'Cash / fixed income', clusterColor: '#5F5E5A', clusterBg: '#F1EFE8',
+    title: "SGOV — iShares 0-3 Month Treasury Bill ETF",
+    body: `<p>SGOV came up in the thread when Smart_Asset asked (#31312) about how the dividend accrual works — specifically whether income begins accruing on the ex-date or on a per-diem basis from the purchase date, and whether shares purchased recently (within two weeks of the ex-date) would receive the full period's income.</p>
+    <p>SeeksQuality clarified (#31318): SGOV pays monthly, the share price drops by the dividend amount on ex-date, then drifts back up over the remainder of the month as income accrues. Income accrues daily throughout the period — shares purchased before ex-date participate in the distribution.</p>
+    <p>Smart_Asset held a relatively large SGOV position, much of it added in the two weeks prior to the thread, with ex-div on or near 7/1.</p>`
+  },
+  'exdiv-tax': {
+    cluster: 'Cash / fixed income', clusterColor: '#5F5E5A', clusterBg: '#F1EFE8',
+    title: "SGOV ex-dividend tax strategy",
+    body: `<p>SeeksQuality mentioned (#31318) a strategy that had been advocated in prior discussion: sell SGOV on the day before the ex-dividend date, then repurchase after ex-date. The intended effect is to convert what would be ordinary income (the dividend) into a short-term capital gain (the price appreciation leading up to ex-date), which can potentially be offset against short-term capital losses elsewhere in the portfolio.</p>
+    <p>SeeksQuality's assessment: "Never seemed worth the trouble to me." The tax benefit is real in theory but requires active management of the trade and introduces execution risk around the ex-date price drop.</p>`
+  },
+  'income-cg': {
+    cluster: 'Cash / fixed income', clusterColor: '#5F5E5A', clusterBg: '#F1EFE8',
+    title: "Ordinary income vs. capital gains — SGOV tax treatment",
+    body: `<p>The underlying tax question with SGOV: Treasury interest income is ordinarily taxed as ordinary income at the federal level (though exempt from state and local taxes — an advantage of T-bills vs. money market funds in high-tax states).</p>
+    <p>The sell-before-ex-div strategy attempts to recharacterize some of that ordinary income as short-term capital gains, which are taxed at the same federal rate as ordinary income but can be netted against capital losses — a flexibility that ordinary income distributions do not offer. The practical value of this strategy depends on whether the investor has offsetting short-term losses available, their state tax situation, and their appetite for the execution overhead.</p>`
+  }
+};
+
+function show(id) {
+  const d = DATA[id];
+  if (!d) return;
+  const panel = document.getElementById('detail');
+  const cluster = document.getElementById('detail-cluster');
+  const title = document.getElementById('detail-title');
+  const body = document.getElementById('detail-body');
+
+  cluster.textContent = d.cluster;
+  cluster.style.background = d.clusterBg;
+  cluster.style.color = d.clusterColor;
+  title.textContent = d.title;
+  body.innerHTML = d.body;
+
+  panel.classList.remove('visible');
+  void panel.offsetWidth;
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function close() {
+  document.getElementById('detail').classList.remove('visible');
+}
+</script>
+
+</body>
+</html>
